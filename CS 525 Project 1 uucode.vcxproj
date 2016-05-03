@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{26A5E6C6-D9AC-4101-ACBF-497976F6C514}</ProjectGuid>
     <RootNamespace>CS525Project1uucode</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.10586.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -110,26 +110,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\..\Downloads\uucode-files\uucode-skeleton.h" />
     <ClInclude Include="uucode.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Downloads\uucode-files\handout.pdf" />
-    <None Include="..\..\..\..\..\..\Downloads\uucode-files\icon1.uue" />
-    <None Include="..\..\..\..\..\..\Downloads\uucode-files\input-0.uue" />
-    <None Include="..\..\..\..\..\..\Downloads\uucode-files\input-1.uue" />
-    <None Include="..\..\..\..\..\..\Downloads\uucode-files\Makefile" />
-    <None Include="..\..\..\..\..\..\Downloads\uucode-files\Makefile2" />
+    <ClCompile Include="driver-args.cpp" />
+    <ClCompile Include="uucode.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\..\..\Downloads\uucode-files\icon1.ico" />
+    <None Include="handout.pdf" />
+    <None Include="icon1.uue" />
+    <None Include="input-0.uue" />
+    <None Include="input-1.uue" />
+    <None Include="Makefile" />
+    <None Include="Makefile2" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\..\..\..\Downloads\uucode-files\input-0.txt" />
-    <Text Include="..\..\..\..\..\..\Downloads\uucode-files\input-1.txt" />
+    <Image Include="icon1.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\Downloads\uucode-files\driver-args.cpp" />
+    <Text Include="input-0.txt" />
+    <Text Include="input-1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

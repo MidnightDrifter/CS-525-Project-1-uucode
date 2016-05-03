@@ -1,2 +1,6 @@
-﻿  driver-args.cpp
+﻿  uucode.cpp
+  driver-args.cpp
 c:\users\administrator\downloads\uucode-files\driver-args.cpp(3): fatal error C1083: Cannot open include file: 'uucode.h': No such file or directory
+  Generating Code...
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(14): error C4716: 'uudecode': must return a value
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(7): error C4716: 'uuencode': must return a value

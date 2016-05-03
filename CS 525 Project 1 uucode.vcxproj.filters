@@ -21,46 +21,46 @@
     <ClInclude Include="uucode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\..\Downloads\uucode-files\uucode-skeleton.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Downloads\uucode-files\handout.pdf">
+    <ClCompile Include="uucode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="driver-args.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="handout.pdf">
       <Filter>Other</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Downloads\uucode-files\icon1.uue">
+    <None Include="icon1.uue">
       <Filter>Other</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Downloads\uucode-files\input-0.uue">
+    <None Include="input-0.uue">
       <Filter>Other</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Downloads\uucode-files\input-1.uue">
+    <None Include="input-1.uue">
       <Filter>Other</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Downloads\uucode-files\Makefile">
+    <None Include="Makefile">
       <Filter>Other</Filter>
     </None>
-    <None Include="..\..\..\..\..\..\Downloads\uucode-files\Makefile2">
+    <None Include="Makefile2">
       <Filter>Other</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\..\..\..\..\..\Downloads\uucode-files\icon1.ico">
+    <Image Include="icon1.ico">
       <Filter>Other</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\..\..\..\Downloads\uucode-files\input-0.txt">
+    <Text Include="input-0.txt">
       <Filter>Other</Filter>
     </Text>
-    <Text Include="..\..\..\..\..\..\Downloads\uucode-files\input-1.txt">
+    <Text Include="input-1.txt">
       <Filter>Other</Filter>
     </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\..\Downloads\uucode-files\driver-args.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
 </Project>
