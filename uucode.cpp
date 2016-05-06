@@ -3,6 +3,8 @@
 #include <string.h>
 #define CHAR_SIZE sizeof(char)
 #define SIZE_OF_BUFFER 3  //Know for a fact that you'll be (trying) to read in 3 chars at a time
+#define OFFSET 32  //Will try to add 32 to each 6-bit char generated from the 3 read characters
+					//When less than 3 characters are read, pad the LEFT with 0's?
 
 int uuencode(const char *InputFilename, const char *RemoteFilename)
 {
@@ -23,6 +25,9 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 	{
 		//Read file here
 		char * buffer = new char[SIZE_OF_BUFFER];
+
+
+
 
 
 	}

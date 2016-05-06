@@ -62,5 +62,8 @@
     <Text Include="input-1.txt">
       <Filter>Other</Filter>
     </Text>
+    <Text Include="EncodingAlgorithmIdea.txt">
+      <Filter>Other</Filter>
+    </Text>
   </ItemGroup>
 </Project>

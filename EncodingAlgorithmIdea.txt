@@ -1,0 +1,37 @@
+int numCharsRead = 0;
+
+while(!EOF)
+{
+
+//read in 6bits as 1char into buffer
+//add 32 to char
+numCharsRead++
+
+if(numCharsRead ==3)
+{
+
+//Write buffer to output file
+//Zero out buffer
+numCharsRead = 0;
+
+}
+
+}
+
+if(numCharsRead ==1)
+{
+//Pad with 2 0's
+//Write to output
+
+}
+
+if(numCharsRead ==2)
+{
+//Pad with 1 0
+//Write to output
+
+}
+
+ //zero out / delete buffer
+ //close streams
+ //return success code
