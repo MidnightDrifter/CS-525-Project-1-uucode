@@ -1,11 +1,25 @@
 int numCharsRead = 0;
 int charsOnCurrentLine = 0;
-while(!EOF)
+char w, x, y, z, A, B, C, temp;
+
+w&=0;
+x&=0;
+y&=0;
+z&=0;
+A&=0;
+B&=0;
+C&=0;
+temp&=0;
+while(!feof(inputFile))
 {
 
 //Try to read in 3 chars
 charsOnCurrentLine+= numCharsRead;
 
+
+
+
+//1st char = A, 2nd = B, 3rd = C
 if(charsOnCurrentLine >= 45)
 {
 	//Move to new line, continue from there
@@ -14,14 +28,19 @@ if(charsOnCurrentLine >= 45)
 
 if(numCharsRead ==1)
 {
-//Pad with 2 0 chars--all 0's
+//B&C =  0's ?
+A = *buffer;
+
 
 
 }
 
 else if(numCharsRead ==2)
 {
-//Pad with 1 0 char
+//C = 0?
+A = *buffer;
+B = *(buffer + sizeof(char));
+
 }
 
 if(numCharsRead ==3)
@@ -30,11 +49,46 @@ if(numCharsRead ==3)
 //Do thing on paper
 //Write to output
 //Zero out buffer
-numCharsRead = 0;
+A = *buffer;
+B = *(buffer + sizeof(char));
+C = *(buffer + sizeof(char)*2);
 
 }
 
-}
+w=A;
+w>>2;
+w&= ~(3<<6);  //3 = 11 in binary, this 0's out the first 2 bits of w
+
+x = A;
+x<<4;
+x&= ~(11<<6);
+
+char temp = B;
+temp >>4;
+temp &= ~(15<<4) //15 = 1111 in binary, this 0's out first 4 bits of temp
+temp |= (3<<4);  //3 = 11 in binary, this sets the 3rd and 4th bits to 1
+
+x|= temp;		
+
+
+y=B;
+y<<2;  //Move last 4 bits of b to middle of y, auto-0's y's new last 4 bits
+y &= (15<<2);  //0 out first 2 and last 2 bits
+
+temp = C;
+temp >>6;  //Shift bits of temp to right
+temp &= ~(63 <<2);  //0 out 1st 6 bits
+
+y|= temp;
+
+
+z =C;
+z &= ~(11<<6);  //0 out 1st 2 bits
+
+w+=32;
+x+=32;
+y+=32;
+z+=32;
 
 
 }
