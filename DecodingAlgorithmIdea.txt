@@ -1,5 +1,5 @@
 int numCharsRead = 0;
-int charsOnCurrentLine = 0;
+int charsOnCurrentLine = 45;
 char W, X, Y, Z, a, b, c, temp;
 
 a&=0;
@@ -10,19 +10,27 @@ X&=0;
 Y&=0;
 Z&=0;
 temp&=0;
+char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
 while(!feof(inputFile))
 {
+if(charsOnCurrentLine < 4)
+			{
+			numCharsRead = fread(buffer, CHAR_SIZE, charsOnCurrentLine, inputFile);
+			//Read in charsOnCurrentLine chars, next char will be newline, ignore and push pointer past it
+			
+			charsOnCurrentLine =45;
+			}
+
+
 //Try to read in 4 chars
 
-			char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
-
+			
+			else{
 			numCharsRead = fread(buffer, CHAR_SIZE, SIZE_OF_WRITE_OUT_BUFFER, inputFile);
-			charsOnCurrentLine +=numCharsRead;
-
-			if(charsOnCurrentLine >= 45)
-			{
-			//Ignore next newline, push pointer past it?
 			}
+			charsOnCurrentLine -=numCharsRead;
+
+			
 
 			if (numCharsRead == 1)
 			{

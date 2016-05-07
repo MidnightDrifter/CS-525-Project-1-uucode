@@ -10,9 +10,14 @@ A&=0;
 B&=0;
 C&=0;
 temp&=0;
+char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
 while(!feof(inputFile))
 {
-
+if(charsOnCurrentLine >= 45)
+{
+	//Insert newline, continue from there
+	charsOnCurrentLine =0;
+}
 //Try to read in 3 chars
 charsOnCurrentLine+= numCharsRead;
 
@@ -20,10 +25,7 @@ charsOnCurrentLine+= numCharsRead;
 
 
 //1st char = A, 2nd = B, 3rd = C
-if(charsOnCurrentLine >= 45)
-{
-	//Move to new line, continue from there
-}
+
 
 
 if(numCharsRead ==1)
