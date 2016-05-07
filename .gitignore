@@ -46,7 +46,5 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
-
-#VisualStudio files
-*.sdf
-*.opensdf
+#VisualStudio stuff
+*.opendb

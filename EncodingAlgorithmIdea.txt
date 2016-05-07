@@ -1,0 +1,45 @@
+int numCharsRead = 0;
+int charsOnCurrentLine = 0;
+while(!EOF)
+{
+
+//Try to read in 3 chars
+charsOnCurrentLine+= numCharsRead;
+
+if(charsOnCurrentLine >= 45)
+{
+	//Move to new line, continue from there
+}
+
+
+if(numCharsRead ==1)
+{
+//Pad with 2 0 chars--all 0's
+
+
+}
+
+else if(numCharsRead ==2)
+{
+//Pad with 1 0 char
+}
+
+if(numCharsRead ==3)
+{
+
+//Do thing on paper
+//Write to output
+//Zero out buffer
+numCharsRead = 0;
+
+}
+
+}
+
+
+}
+
+ //zero out / delete buffer
+  //Write end of file line stuff
+ //close streams
+ //return success code

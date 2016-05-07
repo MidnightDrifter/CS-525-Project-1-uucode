@@ -19,9 +19,9 @@
 
 /**
 \brief
-\param const char * InputFilename
-\param const char * RemoteFilename
-\return int
+\param const char * InputFilename  A string containing the name of the file to be encoded.
+\param const char * RemoteFilename  A string containing the name of the output file to encode to.
+\return int  Return -1 on failure, 0 on success
 */
 
 int uuencode(const char *InputFilename, const char *RemoteFilename);
@@ -29,8 +29,8 @@ int uuencode(const char *InputFilename, const char *RemoteFilename);
 /**
 
 \brief
-\param const char *InputFilename
-\return int
+\param const char *InputFilename  A string containing the name of the file to be decoded
+\return int  Return -1 on failue, 0 on success
 */
 
 
