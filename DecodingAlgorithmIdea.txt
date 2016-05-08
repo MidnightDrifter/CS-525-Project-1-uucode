@@ -1,0 +1,92 @@
+int numCharsRead = 0;
+int charsOnCurrentLine = 45;
+char W, X, Y, Z, a, b, c, temp;
+
+a&=0;
+b&=0;
+c&=0;
+W&=0;
+X&=0;
+Y&=0;
+Z&=0;
+temp&=0;
+char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
+while(!feof(inputFile))
+{
+if(charsOnCurrentLine < 4)
+			{
+			numCharsRead = fread(buffer, CHAR_SIZE, charsOnCurrentLine, inputFile);
+			//Read in charsOnCurrentLine chars, next char will be newline, ignore and push pointer past it
+			
+			charsOnCurrentLine =45;
+			}
+
+
+//Try to read in 4 chars
+
+			
+			else{
+			numCharsRead = fread(buffer, CHAR_SIZE, SIZE_OF_WRITE_OUT_BUFFER, inputFile);
+			}
+			charsOnCurrentLine -=numCharsRead;
+
+			
+
+			if (numCharsRead == 1)
+			{
+			//X, Y, and Z are 0s?
+			W = *buffer;
+			}
+
+			if (numCharsRead == 2)
+			{
+			//Y&Z are 0's?
+			W = *buffer;
+			X = *(buffer+sizeof(char));
+			}
+
+			if (numCharsRead == 3)
+			{ //Z = 0?
+			W = *buffer;
+			X = *(buffer+sizeof(char));
+			Y = *(buffer+sizeof(char)*2);
+
+			}
+
+			if (numCharsRead == 4)
+			{
+			W = *buffer;
+			X = *(buffer+sizeof(char));
+			Y = *(buffer+sizeof(char)*2);
+			Z = *(buffer+sizeof(char)*3);
+
+			}
+
+			a = W;
+			a <<2;  //Shift left 2, auto 0's last 2 digits
+			temp=X;
+			temp>>6;  //Guaranteed to have 2 leading 0's so can just shift left 6 w/o 0'ing out the first 6 digits
+			a|= temp;
+
+			char B = X;
+			b<<4;
+
+			temp = Y;
+			temp >>2;
+			b |= temp;
+			
+			c = Y;
+			c<<6;
+			c |= Z;
+
+			a -=32;
+			b -=32;
+			c -=32;
+
+			//Push to output file
+
+}
+
+//Close file streams
+fclose(inputFile);
+//Return success code

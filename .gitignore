@@ -48,4 +48,4 @@ Temporary Items
 
 #VisualStudio stuff
 *.opendb
-*.suo
+*.opensdf
