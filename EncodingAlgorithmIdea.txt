@@ -13,12 +13,16 @@ B&=0;
 C&=0;
 temp&=0;
 char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER]
-//Use fseek and fgetpos to figure out # characters in input file
-while(trash = fgetc(inputFile) != EOF)
+
+fpos_t startOfFile; 
+fgetpos(inputFile, &startOfFile);
+
+while((trash = fgetc(inputFile)) != EOF)
 {
 	numCharactersInDocument++;
 
 }
+fsetpos(&startOfFile);
 
 //Use fread for BINARY parsing & reading
 

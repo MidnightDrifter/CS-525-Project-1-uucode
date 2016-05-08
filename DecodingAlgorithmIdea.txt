@@ -11,6 +11,12 @@ X&=0;
 Y&=0;
 Z&=0;
 temp&=0;
+
+
+
+
+
+
 char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];  //Make this size of file?  Maybe subtract the 'begin 644' [filename.txt] and ' \'\ 
 //Read past begin, filename, etc, get to 1st encoded line
 charsOnCurrentLine = fgetc(inputFile) -32;
