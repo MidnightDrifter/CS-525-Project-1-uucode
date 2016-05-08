@@ -1,5 +1,6 @@
 int numCharsRead = 0;
-int charsOnCurrentLine = 45;
+int index = 0;
+int charsOnCurrentLine =0;
 char W, X, Y, Z, a, b, c, temp;
 
 a&=0;
@@ -10,28 +11,32 @@ X&=0;
 Y&=0;
 Z&=0;
 temp&=0;
-char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
+char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];  //Make this size of file?  Maybe subtract the 'begin 644' [filename.txt] and ' \'\ 
+//Read past begin, filename, etc, get to 1st encoded line
+charsOnCurrentLine = fgetc(inputFile) -32;
 while(!feof(inputFile))
-{
+{charsOnCurrentLine 
 if(charsOnCurrentLine < 4)
 			{
 			numCharsRead = fread(buffer, CHAR_SIZE, charsOnCurrentLine, inputFile);
 			//Read in charsOnCurrentLine chars, next char will be newline, ignore and push pointer past it
 			
-			charsOnCurrentLine =45;
+			charsOnCurrentLine =60;
 			}
 
 
 //Try to read in 4 chars
-
+//Use fscanf for TEXT parsing & reading
+//(Try to) Read in 60 chars, write to some arrays--numCharsOnLine : (that many characters read from that line) pairs, perform operations on those to make life easier
+//numCharsRead should always be divisible by 4, don't need to worry about other cases
 			
 			else{
-			numCharsRead = fread(buffer, CHAR_SIZE, SIZE_OF_WRITE_OUT_BUFFER, inputFile);
+			numCharsRead = fscanf(buffer, CHAR_SIZE, SIZE_OF_WRITE_OUT_BUFFER, inputFile);
 			}
 			charsOnCurrentLine -=numCharsRead;
 
 			
-
+			/*
 			if (numCharsRead == 1)
 			{
 			//X, Y, and Z are 0s?
@@ -61,7 +66,7 @@ if(charsOnCurrentLine < 4)
 			Z = *(buffer+sizeof(char)*3);
 
 			}
-
+			*/
 			a = W;
 			a <<2;  //Shift left 2, auto 0's last 2 digits
 			temp=X;

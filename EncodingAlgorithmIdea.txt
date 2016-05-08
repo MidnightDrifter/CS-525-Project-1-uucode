@@ -1,5 +1,7 @@
 int numCharsRead = 0;
-int charsOnCurrentLine = 0;
+int readInCharacters = 0;
+int numCharactersInDocument=0;
+int trash=0;
 char w, x, y, z, A, B, C, temp;
 
 w&=0;
@@ -10,16 +12,27 @@ A&=0;
 B&=0;
 C&=0;
 temp&=0;
-char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
+char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER]
+//Use fseek and fgetpos to figure out # characters in input file
+while(trash = fgetc(inputFile) != EOF)
+{
+	numCharactersInDocument++;
+
+}
+
+//Use fread for BINARY parsing & reading
+
 while(!feof(inputFile))
 {
-if(charsOnCurrentLine >= 45)
+if(readInCharacters >= 45)
 {
+	
+
 	//Insert newline, continue from there
-	charsOnCurrentLine =0;
+	readInCharacters =0;
 }
 //Try to read in 3 chars
-charsOnCurrentLine+= numCharsRead;
+readInCharacters+= numCharsRead;
 
 
 
@@ -92,6 +105,27 @@ x+=32;
 y+=32;
 z+=32;
 
+
+if(w=32)  //Convert all spaces to ' s
+{
+	w=96
+}
+
+\
+if(x=32)  //Convert all spaces to ' s
+{
+	x=96
+}
+
+if(y=32)  //Convert all spaces to ' s
+{
+	y=96
+}
+
+if(z=32)  //Convert all spaces to ' s
+{
+	z=96;
+}
 
 }
 
