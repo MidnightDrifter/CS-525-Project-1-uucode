@@ -5,7 +5,7 @@
 #define SIZE_OF_READ_IN_BUFFER 3  //Know for a fact that you'll be (trying) to read in 3 chars at a time
 #define SIZE_OF_WRITE_OUT_BUFFER 4//Know for a fact that you'll be trying to read in 4 chars at a time
 #define OFFSET 32  //Will try to add 32 to each 6-bit char generated from the 3 read characters
-					//When less than 3 characters are read, pad the LEFT with 0's?
+					//When less than 3 characters are read, pad the RIGHT with 0s
 
 int uuencode(const char *InputFilename, const char *RemoteFilename)
 {
@@ -39,7 +39,7 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 
 			if (numCharsOnCurrentLine >= 45)
 			{
-				//Move to new line and continue alg.
+				//Insert newline char, continue alg
 			}
 
 			if (numCharsRead == 1)
@@ -72,20 +72,43 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 int uudecode(const char *InputFilename)
 {
 	//Text file -> decode and write to stdout
-
+	FILE * inputFile = fopen(InputFilename, "r");
 	int numCharsRead = 0;
 	int numCharsOnCurrentLine = 0;
-	char x, y, z;
+	int numCharsInDocument = 0;
+	int trash;
+	char A, B, C, w, x, y, z;
+	w &= 0;
 	x &= 0;
 	y &= 0;
 	z &= 0;
+	A &= 0;
+	B &= 0;
+	C &= 0;
 
+	fpos_t startOfFile;
+	fgetpos(inputFile, &startOfFile);
 
-	FILE * inputFile = fopen(InputFilename, "r");
-	//Read in output file name from file
-	//Make file
-	char * outputFilename = "";
-	FILE * outputFile = fopen(outputFilename, "w+");
+	while ((trash = fgetc(inputFile)) != EOF)
+	{
+		numCharsInDocument++;
+
+	}
+	fsetpos(inputFile, &startOfFile);
+
+	int lengthOfFilename = 0;
+	char temp2 = 123;
+	while (temp2 != NULL)
+	{
+	
+		temp2 = *(InputFilename + lengthOfFilename);
+		lengthOfFilename++;
+	}
+	lengthOfFilename += 3;
+
+	char * trashBuffer = new char[lengthOfFilename];
+
+	//Read in first line--3 fseekf, to get through the 2 spaces and 1 newline?  Or can filenames have spaces in 'em?
 
 
 	if (!inputFile)
@@ -93,7 +116,7 @@ int uudecode(const char *InputFilename)
 		perror(InputFilename);
 		printf("Error:  file cannot be opened to be read.\n");
 		fclose(inputFile);
-		fclose(outputFile);
+		
 		return -1;  //Error code of -1 for failing
 	}
 
@@ -103,7 +126,7 @@ int uudecode(const char *InputFilename)
 			//Read file here
 			char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
 
-			numCharsRead = fread(buffer, CHAR_SIZE, SIZE_OF_WRITE_OUT_BUFFER, inputFile);
+			//numCharsRead = fread(buffer, CHAR_SIZE, SIZE_OF_WRITE_OUT_BUFFER, inputFile);
 
 
 			if (numCharsRead == 1)
