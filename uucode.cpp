@@ -13,7 +13,7 @@
 void encode(char a, char b, char c, char * encodedCharacters)
 {
 	*encodedCharacters = a;
-	(*encodedCharacters) >> 2;
+	(*encodedCharacters) >>= 2;
 	(*encodedCharacters) &= ~(3 << 6); //3 = 11 in binary, this 0's out the first two bits of encodedCharacters[0]
 	*(encodedCharacters + (sizeof(char)) )= a;
 	*(encodedCharacters + (sizeof(char))) << 4;
@@ -30,11 +30,11 @@ void encode(char a, char b, char c, char * encodedCharacters)
 
 	*(encodedCharacters + (sizeof(char) * 2)) = b;
 
-	(*(encodedCharacters + (sizeof(char) * 2))) << 2;
+	(*(encodedCharacters + (sizeof(char) * 2))) <<= 2;
 	(*(encodedCharacters + (sizeof(char) * 2))) &= (15 << 2);  //0's out the first 2 and last 2 bits
 	 
 	temp = c;
-	temp >> 6;  //Shift bits of temp to right
+	temp >>= 6;  //Shift bits of temp to right
 	temp &= ~(63 << 2);  //0 out 1st 6 bits of temp
 
 	(*(encodedCharacters + (sizeof(char) * 2))) |= temp;
@@ -64,20 +64,20 @@ void encode(char a, char b, char c, char * encodedCharacters)
 void decode(char a, char b, char c, char d, char * decodedCharacters)
 {
 	*decodedCharacters = a;
-	*decodedCharacters << 2;  //Shift left 2, guaranteed to 0 out last 2 digits
+	*decodedCharacters <<= 2;  //Shift left 2, guaranteed to 0 out last 2 digits
 	char temp = b;
-	temp >> 6;  //If encoded properly, chars a-d shouls all have 2 leading 0's, so you're sure to 0 out the 1st 6 bits
+	temp >>= 6;  //If encoded properly, chars a-d shouls all have 2 leading 0's, so you're sure to 0 out the 1st 6 bits
 	*decodedCharacters |= temp;
 
 	*(decodedCharacters + (sizeof(char))) = b;
-	*(decodedCharacters + (sizeof(char))) << 4;
+	*(decodedCharacters + (sizeof(char))) <<= 4;
 
 	temp = c;
-	temp >> 2;
+	temp >>= 2;
 	*(decodedCharacters + (sizeof(char))) |= temp;
 
 	*(decodedCharacters + (sizeof(char) * 2)) = c;
-	*(decodedCharacters + (sizeof(char) * 2)) << 6;
+	*(decodedCharacters + (sizeof(char) * 2)) <<= 6;
 	*(decodedCharacters + (sizeof(char) * 2)) |= d;
 
 
