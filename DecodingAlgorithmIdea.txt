@@ -18,10 +18,19 @@ temp&=0;
 
 
 char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];  //Make this size of file?  Maybe subtract the 'begin 644' [filename.txt] and ' \'\ 
+													//No, make this the max size of an encoded line--61--1st character is number of chars on the line, the rest is encoded shiz
+
+
 //Read past begin, filename, etc, get to 1st encoded line
-charsOnCurrentLine = fgetc(inputFile) -32;
+//charsOnCurrentLine = fgetc(inputFile) -32;
 while(!feof(inputFile))
-{charsOnCurrentLine 
+{
+
+numCharsRead = fscanf(inputFile, "%s", buffer)
+
+
+
+/*charsOnCurrentLine 
 if(charsOnCurrentLine < 4)
 			{
 			numCharsRead = fread(buffer, CHAR_SIZE, charsOnCurrentLine, inputFile);
@@ -35,6 +44,9 @@ if(charsOnCurrentLine < 4)
 //Use fscanf for TEXT parsing & reading
 //(Try to) Read in 60 chars, write to some arrays--numCharsOnLine : (that many characters read from that line) pairs, perform operations on those to make life easier
 //numCharsRead should always be divisible by 4, don't need to worry about other cases
+
+
+
 			
 			else{
 			numCharsRead = fscanf(buffer, CHAR_SIZE, SIZE_OF_WRITE_OUT_BUFFER, inputFile);
@@ -42,7 +54,7 @@ if(charsOnCurrentLine < 4)
 			charsOnCurrentLine -=numCharsRead;
 
 			
-			/*
+			
 			if (numCharsRead == 1)
 			{
 			//X, Y, and Z are 0s?
