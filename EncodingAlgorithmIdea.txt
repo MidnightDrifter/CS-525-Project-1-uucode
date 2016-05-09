@@ -79,7 +79,7 @@ w&= ~(3<<6);  //3 = 11 in binary, this 0's out the first 2 bits of w
 
 x = A;
 x<<4;
-x&= ~(11<<6);
+x&= ~(3<<6);
 
 char temp = B;
 temp >>4;
@@ -90,7 +90,7 @@ x|= temp;
 
 
 y=B;
-y<<2;  //Move last 4 bits of b to middle of y, auto-0's y's new last 4 bits
+y<<2;  //Move last 4 bits of b to middle of y, auto-0's y's new last 2 bits
 y &= (15<<2);  //0 out first 2 and last 2 bits
 
 temp = C;

@@ -91,7 +91,7 @@ if(charsOnCurrentLine < 4)
 			temp>>6;  //Guaranteed to have 2 leading 0's so can just shift left 6 w/o 0'ing out the first 6 digits
 			a|= temp;
 
-			char B = X;
+			b = X;
 			b<<4;
 
 			temp = Y;

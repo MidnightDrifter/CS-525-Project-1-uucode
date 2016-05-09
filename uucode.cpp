@@ -7,6 +7,100 @@
 #define OFFSET 32  //Will try to add 32 to each 6-bit char generated from the 3 read characters
 					//When less than 3 characters are read, pad the RIGHT with 0s
 
+
+
+
+void encode(char a, char b, char c, char * encodedCharacters)
+{
+	*encodedCharacters = a;
+	(*encodedCharacters) >> 2;
+	(*encodedCharacters) &= ~(3 << 6); //3 = 11 in binary, this 0's out the first two bits of encodedCharacters[0]
+	*(encodedCharacters + (sizeof(char)) )= a;
+	*(encodedCharacters + (sizeof(char))) << 4;
+	*(encodedCharacters + (sizeof(char))) &= ~(3 << 6);
+
+	char temp = b;
+
+	temp >> 4;
+	temp &= ~(15 << 4);  //15 = 1111 in binary, this 0's out the first 4 bits of temp
+	temp |= ~(3 << 6);  //3 = 11 in binary, this sets the 3rd and 4th bits to 1
+
+	*(encodedCharacters + (sizeof(char))) |= temp;
+
+
+	*(encodedCharacters + (sizeof(char) * 2)) = b;
+
+	(*(encodedCharacters + (sizeof(char) * 2))) << 2;
+	(*(encodedCharacters + (sizeof(char) * 2))) &= (15 << 2);  //0's out the first 2 and last 2 bits
+	 
+	temp = c;
+	temp >> 6;  //Shift bits of temp to right
+	temp &= ~(63 << 2);  //0 out 1st 6 bits of temp
+
+	(*(encodedCharacters + (sizeof(char) * 2))) |= temp;
+
+	(*(encodedCharacters + (sizeof(char) * 3))) = c;
+	(*(encodedCharacters + (sizeof(char) * 3))) &= ~(3 << 6); //0 out 1st 2 bits
+
+		int i;
+	for (i = 0; i < 4; i++)
+	{
+		if ((*(encodedCharacters + (sizeof(char)*i))) == 0)
+		{
+			(*(encodedCharacters + (sizeof(char)*i))) = 96;
+		}
+
+		else
+		{
+			(*(encodedCharacters + (sizeof(char)*i))) += 32;
+		}
+
+	}
+
+
+}
+
+
+void decode(char a, char b, char c, char d, char * decodedCharacters)
+{
+	*decodedCharacters = a;
+	*decodedCharacters << 2;  //Shift left 2, guaranteed to 0 out last 2 digits
+	char temp = b;
+	temp >> 6;  //If encoded properly, chars a-d shouls all have 2 leading 0's, so you're sure to 0 out the 1st 6 bits
+	*decodedCharacters |= temp;
+
+	*(decodedCharacters + (sizeof(char))) = b;
+	*(decodedCharacters + (sizeof(char))) << 4;
+
+	temp = c;
+	temp >> 2;
+	*(decodedCharacters + (sizeof(char))) |= temp;
+
+	*(decodedCharacters + (sizeof(char) * 2)) = c;
+	*(decodedCharacters + (sizeof(char) * 2)) << 6;
+	*(decodedCharacters + (sizeof(char) * 2)) |= d;
+
+
+	int i;
+	for (i = 0; i < 3; i++)
+	{
+		if ((*(decodedCharacters + (sizeof(char)*i))) == 64)
+		{	//It's a space?  uuuhhh...
+			(*(decodedCharacters + (sizeof(char)*i))) = 32;
+		}
+
+		else
+		{
+			(*(decodedCharacters + (sizeof(char)*i))) -= 32;
+
+		}
+	
+	}
+}
+
+
+
+
 int uuencode(const char *InputFilename, const char *RemoteFilename)
 {
 	// Text OR Binary file -> text file
