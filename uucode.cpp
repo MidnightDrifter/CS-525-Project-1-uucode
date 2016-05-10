@@ -225,9 +225,10 @@ int uudecode(const char *InputFilename)
 	//Text file -> decode and write to stdout
 	FILE * inputFile = fopen(InputFilename, "r");
 	int numCharsRead = 0;
-	int numCharsOnCurrentLine = 0;
+	int numCharsOnCurrentLine = 60;
 	int numCharsInDocument = 0;
 	int trash;
+	bool isLastLine = false;
 	char A, B, C, w, x, y, z;
 	w &= 0;
 	x &= 0;
@@ -245,7 +246,7 @@ int uudecode(const char *InputFilename)
 
 	}
 	rewind(inputFile);
-
+/*
 	int lengthOfFilename = 0;
 	char temp2 = 123;
 	while (temp2 != NULL)
@@ -255,12 +256,16 @@ int uudecode(const char *InputFilename)
 		lengthOfFilename++;
 	}
 	lengthOfFilename += 3;
+	*/
+	//char * trashBuffer = new char[lengthOfFilename];
 
-	char * trashBuffer = new char[lengthOfFilename];
 
 	//Read in first line--3 fseekf, to get through the 2 spaces and 1 newline?  Or can filenames have spaces in 'em?
+	//Filenames cannot have spaces
 
-
+	//Figure out the [filename].txt length, or just set it to a large-ish size and leave it at that?
+	char * outputFilename = new char[53];
+	char * decodedText = new char[SIZE_OF_DECODED_TEXT_BUFFER];
 	if (!inputFile)
 	{
 		perror(InputFilename);
@@ -272,13 +277,40 @@ int uudecode(const char *InputFilename)
 
 	else
 	{
+		fscanf(inputFile, "%s");
+		fscanf(inputFile, "%s");
+		fscanf(inputFile, "%s", outputFilename);
+
+		char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
+
+		numCharsOnCurrentLine = (fgetc(inputFile) - 32);
+
 		do {
 			//Read file here
-			char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
+			if (numCharsRead >= numCharsOnCurrentLine)
+			{//Next character should be the first character in a line--the # of characters in that line
+				numCharsOnCurrentLine = (fgetc(inputFile)) - 32;
+
+
+			}
+
+			if (numCharsOnCurrentLine == 0)
+			{
+				isLastLine = true;
+				puts("\n");
+			}
+
+			else
+			{
+				fscanf(inputFile, "%4s", decodedText);
+				puts(decodedText);
+				numCharsRead += 4;
+
+			}
 
 			//numCharsRead = fread(buffer, CHAR_SIZE, SIZE_OF_WRITE_OUT_BUFFER, inputFile);
 
-
+			/*
 			if (numCharsRead == 1)
 			{
 
@@ -298,13 +330,18 @@ int uudecode(const char *InputFilename)
 			{
 
 			}
-
-		} while (numCharsRead > 0);
+			*/
+		} while (!isLastLine);
 
 		//Write last line(s)
 		//Close file streams
+		delete outputFilename;
+		delete buffer;
+		delete decodedText;
+		
 
-		fclose(inputFile);
+	}
 
+	fclose(inputFile);
 
 }
