@@ -18,12 +18,12 @@ void encode(char a, char b, char c, char * encodedCharacters)
 	(*encodedCharacters) >>= 2;
 	(*encodedCharacters) &= ~(3 << 6); //3 = 11 in binary, this 0's out the first two bits of encodedCharacters[0]
 	*(encodedCharacters + (sizeof(char)) )= a;
-	*(encodedCharacters + (sizeof(char))) << 4;
+	*(encodedCharacters + (sizeof(char))) <<= 4;
 	*(encodedCharacters + (sizeof(char))) &= ~(3 << 6);
 
 	char temp = b;
 
-	temp >> 4;
+	temp >>= 4;
 	temp &= ~(15 << 4);  //15 = 1111 in binary, this 0's out the first 4 bits of temp
 	temp |= ~(3 << 6);  //3 = 11 in binary, this sets the 3rd and 4th bits to 1
 
