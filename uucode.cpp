@@ -4,6 +4,8 @@
 #define CHAR_SIZE sizeof(char)
 #define SIZE_OF_READ_IN_BUFFER 3  //Know for a fact that you'll be (trying) to read in 3 chars at a time
 #define SIZE_OF_WRITE_OUT_BUFFER 4//Know for a fact that you'll be trying to read in 4 chars at a time
+#define SIZE_OF_ENCODED_TEXT_BUFFER 4  //Know for a fact that you'll be writing out 4 chars at a time to encoded file
+#define SIZE_OF_DECODED_TEXT_BUFFER 3 //Know for a fact that you'll be writing out 3 chars at a time when decoding
 #define OFFSET 32  //Will try to add 32 to each 6-bit char generated from the 3 read characters
 					//When less than 3 characters are read, pad the RIGHT with 0s
 
@@ -106,7 +108,8 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 	// Text OR Binary file -> text file
 	FILE * inputFile = fopen(InputFilename, "rb");
 	
-	
+	int numCharsInDocument = 0;
+	int trash;
 	int len = strlen(InputFilename);  //Get the filename, copy it, change the copy to end in ".uue"
 	char * uueFile = new char[len];
 	strcpy(uueFile, InputFilename);
@@ -131,49 +134,88 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 		printf("Error:  file cannot be opened to be read.\n");
 		fclose(inputFile);
 		fclose(outputFile);
+		delete uueFile;
 		return -1;  //Error code of -1 for failing
 	}
 	
 	else
 	{ 
+		while ((trash = fgetc(inputFile)) != EOF)
+		{
+			numCharsInDocument++;
+
+		}
+		rewind(inputFile);
 		fprintf(outputFile, "begin 644 ");
 		fprintf(outputFile, RemoteFilename);
 		fprintf(outputFile, "\n");
+		char * buffer = new char[SIZE_OF_READ_IN_BUFFER];
+		char * encodedText = new char[SIZE_OF_ENCODED_TEXT_BUFFER];
+
+		if (numCharsInDocument < 45)
+		{
+			putc((numCharsInDocument + 32), outputFile);
+		}
+
+		else
+		{
+			putc('M', outputFile);
+		}
 
 		do {
 			//Read file here
-			char * buffer = new char[SIZE_OF_READ_IN_BUFFER];
+			
 
 			numCharsRead = fread(buffer, CHAR_SIZE, SIZE_OF_READ_IN_BUFFER, inputFile);
 
 			if (numCharsOnCurrentLine >= 45)
 			{
 				//Insert newline char, continue alg
+				fprintf(outputFile, "\n");
+				numCharsInDocument-= numCharsOnCurrentLine;
+				
+				if (numCharsInDocument < 45)
+				{
+					putc((numCharsInDocument + 32), outputFile);
+				}
+
+				else
+				{
+					putc('M', outputFile);
+				}
 			}
 
 			if (numCharsRead == 1)
 			{
-
+				encode((*(buffer)), '0', '0', encodedText);
 			}
 
 			if (numCharsRead == 2)
 			{
-
+				encode((*(buffer)), (*(buffer + CHAR_SIZE)), '0', encodedText);
 			}
 
 			if (numCharsRead == 3)
 			{
-
+				encode((*(buffer)), (*(buffer + CHAR_SIZE)), (*(buffer + (CHAR_SIZE*2))), encodedText);
 			}
 
+			fprintf(outputFile, buffer);
+
 		} while (numCharsRead > 0);
+		delete buffer;
 	}
 	
 	//Write last line(s)
-	
+	fprintf(outputFile,"`\n");
+	fprintf(outputFile, "end\n");
 	//Close file streams
 	fclose(inputFile);
 	fclose(outputFile);
+
+	//Delete various char arrays
+	delete uueFile;
+	
 
 }
 
@@ -195,15 +237,14 @@ int uudecode(const char *InputFilename)
 	B &= 0;
 	C &= 0;
 
-	fpos_t startOfFile;
-	fgetpos(inputFile, &startOfFile);
+
 
 	while ((trash = fgetc(inputFile)) != EOF)
 	{
 		numCharsInDocument++;
 
 	}
-	fsetpos(inputFile, &startOfFile);
+	rewind(inputFile);
 
 	int lengthOfFilename = 0;
 	char temp2 = 123;
