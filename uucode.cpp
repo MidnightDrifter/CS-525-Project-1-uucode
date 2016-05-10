@@ -146,7 +146,7 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 
 		}
 		rewind(inputFile);
-		fprintf(outputFile, "begin 644 ");
+		fputs( "begin 644 ",outputFile);
 		fprintf(outputFile, RemoteFilename);
 		fprintf(outputFile, "\n");
 		char * buffer = new char[SIZE_OF_READ_IN_BUFFER];
@@ -200,22 +200,22 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 				encode((*(buffer)), (*(buffer + CHAR_SIZE)), (*(buffer + (CHAR_SIZE*2))), encodedText);
 			}
 
-			fprintf(outputFile, buffer);
+			fputs( buffer, outputFile);
 
 		} while (numCharsRead > 0);
 		delete buffer;
 	}
 	
 	//Write last line(s)
-	fprintf(outputFile,"`\n");
-	fprintf(outputFile, "end\n");
+	fputs("`\n", outputFile);
+	fputs("end\n", outputFile);
 	//Close file streams
 	fclose(inputFile);
 	fclose(outputFile);
 
 	//Delete various char arrays
 	delete uueFile;
-	
+	return 0;
 
 }
 
@@ -229,6 +229,7 @@ int uudecode(const char *InputFilename)
 	int numCharsInDocument = 0;
 	int trash;
 	bool isLastLine = false;
+	char * trashString = new char[10];
 	char A, B, C, w, x, y, z;
 	w &= 0;
 	x &= 0;
@@ -277,8 +278,9 @@ int uudecode(const char *InputFilename)
 
 	else
 	{
-		fscanf(inputFile, "%s");
-		fscanf(inputFile, "%s");
+		fscanf(inputFile, "%s", trashString);
+		fscanf(inputFile, "%s",trashString);
+		delete trashString;
 		fscanf(inputFile, "%s", outputFilename);
 
 		char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
@@ -343,5 +345,5 @@ int uudecode(const char *InputFilename)
 	}
 
 	fclose(inputFile);
-
+	return 0;
 }

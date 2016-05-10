@@ -1,16 +1,12 @@
-﻿Build started 5/10/2016 1:26:27 PM.
+﻿Build started 5/10/2016 1:27:22 PM.
      1>Project "C:\Users\sean.higgins\Source\Repos\CS-525-Project-1-uucode\CS 525 Project 1 uucode.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt "driver-args.cpp" uucode.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt uucode.cpp
          uucode.cpp
-     1>c:\users\sean.higgins\source\repos\cs-525-project-1-uucode\uucode.cpp(21): warning C4552: '<<': operator has no effect; expected operator with side-effect
-     1>c:\users\sean.higgins\source\repos\cs-525-project-1-uucode\uucode.cpp(26): warning C4552: '>>': operator has no effect; expected operator with side-effect
      1>c:\users\sean.higgins\source\repos\cs-525-project-1-uucode\uucode.cpp(109): error C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
          c:\program files (x86)\windows kits\10\include\10.0.10150.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
-         driver-args.cpp
-         Generating Code...
      1>Done Building Project "C:\Users\sean.higgins\Source\Repos\CS-525-Project-1-uucode\CS 525 Project 1 uucode.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:00:02.57
+Time Elapsed 00:00:00.26
