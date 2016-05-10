@@ -147,8 +147,8 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 		}
 		rewind(inputFile);
 		fputs( "begin 644 ",outputFile);
-		fprintf(outputFile, RemoteFilename);
-		fprintf(outputFile, "\n");
+		fputs( RemoteFilename,outputFile);
+		fputs("\n",outputFile);
 		char * buffer = new char[SIZE_OF_READ_IN_BUFFER];
 		char * encodedText = new char[SIZE_OF_ENCODED_TEXT_BUFFER];
 
