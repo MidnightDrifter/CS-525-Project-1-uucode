@@ -108,15 +108,15 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 	
 	
 	int len = strlen(InputFilename);  //Get the filename, copy it, change the copy to end in ".uue"
-	char * temp = new char[len];
-	strcpy(temp, InputFilename);
-	*(temp + (sizeof(char) - 4)) = '.';
-	*(temp + (sizeof(char) - 3)) = 'u';
-	*(temp + (sizeof(char) - 2)) = 'u';
-	*(temp + (sizeof(char) - 1)) = 'e';
+	char * uueFile = new char[len];
+	strcpy(uueFile, InputFilename);
+	*(uueFile + (sizeof(char) - 4)) = '.';
+	*(uueFile + (sizeof(char) - 3)) = 'u';
+	*(uueFile + (sizeof(char) - 2)) = 'u';
+	*(uueFile + (sizeof(char) - 1)) = 'e';
 
 
-	FILE * outputFile = fopen(temp, "w");
+	FILE * outputFile = fopen(uueFile, "w");  //Double check later, might need to use w+ instead
 	int numCharsRead = 0;
 	int numCharsOnCurrentLine = 0;
 	char a, b, c, d;
@@ -135,7 +135,11 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 	}
 	
 	else
-	{
+	{ 
+		fprintf(outputFile, "begin 644 ");
+		fprintf(outputFile, RemoteFilename);
+		fprintf(outputFile, "\n");
+
 		do {
 			//Read file here
 			char * buffer = new char[SIZE_OF_READ_IN_BUFFER];
