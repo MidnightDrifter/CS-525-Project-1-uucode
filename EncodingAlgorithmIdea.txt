@@ -1,5 +1,7 @@
 int numCharsRead = 0;
-int charsOnCurrentLine = 0;
+int readInCharacters = 0;
+int numCharactersInDocument=0;
+int trash=0;
 char w, x, y, z, A, B, C, temp;
 
 w&=0;
@@ -10,16 +12,30 @@ A&=0;
 B&=0;
 C&=0;
 temp&=0;
-char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
+char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER]
+
+
+
+while((trash = fgetc(inputFile)) != EOF)
+{
+	numCharactersInDocument++;
+
+}
+rewind(inputFile);
+
+//Use fread for BINARY parsing & reading
+
 while(!feof(inputFile))
 {
-if(charsOnCurrentLine >= 45)
+if(readInCharacters >= 45)
 {
+	
+
 	//Insert newline, continue from there
-	charsOnCurrentLine =0;
+	readInCharacters =0;
 }
 //Try to read in 3 chars
-charsOnCurrentLine+= numCharsRead;
+readInCharacters+= numCharsRead;
 
 
 
@@ -63,7 +79,7 @@ w&= ~(3<<6);  //3 = 11 in binary, this 0's out the first 2 bits of w
 
 x = A;
 x<<4;
-x&= ~(11<<6);
+x&= ~(3<<6);
 
 char temp = B;
 temp >>4;
@@ -74,7 +90,7 @@ x|= temp;
 
 
 y=B;
-y<<2;  //Move last 4 bits of b to middle of y, auto-0's y's new last 4 bits
+y<<2;  //Move last 4 bits of b to middle of y, auto-0's y's new last 2 bits
 y &= (15<<2);  //0 out first 2 and last 2 bits
 
 temp = C;
@@ -92,6 +108,27 @@ x+=32;
 y+=32;
 z+=32;
 
+
+if(w=32)  //Convert all spaces to ' s
+{
+	w=96
+}
+
+\
+if(x=32)  //Convert all spaces to ' s
+{
+	x=96
+}
+
+if(y=32)  //Convert all spaces to ' s
+{
+	y=96
+}
+
+if(z=32)  //Convert all spaces to ' s
+{
+	z=96;
+}
 
 }
 
