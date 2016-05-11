@@ -132,6 +132,7 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 	{
 		perror(InputFilename);
 		printf("Error:  file cannot be opened to be read.\n");
+		trash = getchar();
 		fclose(inputFile);
 		fclose(outputFile);
 		delete uueFile;
@@ -271,7 +272,7 @@ int uudecode(const char *InputFilename)
 		perror(InputFilename);
 		printf("Error:  file cannot be opened to be read.\n");
 		fclose(inputFile);
-		
+		trash = getchar();
 		return -1;  //Error code of -1 for failing
 	}
 

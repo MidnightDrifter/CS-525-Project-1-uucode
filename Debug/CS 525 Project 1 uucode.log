@@ -1,6 +1,31 @@
 ﻿  uucode.cpp
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(21): warning C4552: '<<': operator has no effect; expected operator with side-effect
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(26): warning C4552: '>>': operator has no effect; expected operator with side-effect
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(109): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10586.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(115): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10586.0\ucrt\string.h(129): note: see declaration of 'strcpy'
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(122): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10586.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(227): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10586.0\ucrt\stdio.h(205): note: see declaration of 'fopen'
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(281): warning C4473: 'fscanf' : not enough arguments passed for format string
+  c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(281): note: placeholders and their parameters expect 1 variadic arguments, but 0 were provided
+  c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(281): note: the missing variadic argument 1 is required by format string '%s'
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(281): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10586.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(282): warning C4473: 'fscanf' : not enough arguments passed for format string
+  c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(282): note: placeholders and their parameters expect 1 variadic arguments, but 0 were provided
+  c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(282): note: the missing variadic argument 1 is required by format string '%s'
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(282): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10586.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(283): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10586.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(306): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10586.0\ucrt\stdio.h(1193): note: see declaration of 'fscanf'
   driver-args.cpp
-c:\users\administrator\downloads\uucode-files\driver-args.cpp(3): fatal error C1083: Cannot open include file: 'uucode.h': No such file or directory
   Generating Code...
-c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(14): error C4716: 'uudecode': must return a value
-c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(7): error C4716: 'uuencode': must return a value
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(221): warning C4715: 'uuencode': not all control paths return a value
+c:\users\administrator\documents\github\digipen\summer 2016\cs 525\cs 525 project 1 uucode\uucode.cpp(348): warning C4715: 'uudecode': not all control paths return a value
+  CS 525 Project 1 uucode.vcxproj -> C:\Users\Administrator\Documents\GitHub\DigiPen\Summer 2016\CS 525\CS 525 Project 1 uucode\Debug\CS 525 Project 1 uucode.exe
+  CS 525 Project 1 uucode.vcxproj -> C:\Users\Administrator\Documents\GitHub\DigiPen\Summer 2016\CS 525\CS 525 Project 1 uucode\Debug\CS 525 Project 1 uucode.pdb (Partial PDB)
