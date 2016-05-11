@@ -18,12 +18,12 @@ void encode(char a, char b, char c, char * encodedCharacters)
 	(*encodedCharacters) >>= 2;
 	(*encodedCharacters) &= ~(3 << 6); //3 = 11 in binary, this 0's out the first two bits of encodedCharacters[0]
 	*(encodedCharacters + (sizeof(char)) )= a;
-	*(encodedCharacters + (sizeof(char))) << 4;
+	*(encodedCharacters + (sizeof(char))) <<= 4;
 	*(encodedCharacters + (sizeof(char))) &= ~(3 << 6);
 
 	char temp = b;
 
-	temp >> 4;
+	temp >>= 4;
 	temp &= ~(15 << 4);  //15 = 1111 in binary, this 0's out the first 4 bits of temp
 	temp |= ~(3 << 6);  //3 = 11 in binary, this sets the 3rd and 4th bits to 1
 
@@ -147,9 +147,9 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 
 		}
 		rewind(inputFile);
-		fprintf(outputFile, "begin 644 ");
-		fprintf(outputFile, RemoteFilename);
-		fprintf(outputFile, "\n");
+		fputs( "begin 644 ",outputFile);
+		fputs( RemoteFilename,outputFile);
+		fputs("\n",outputFile);
 		char * buffer = new char[SIZE_OF_READ_IN_BUFFER];
 		char * encodedText = new char[SIZE_OF_ENCODED_TEXT_BUFFER];
 
@@ -201,22 +201,22 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 				encode((*(buffer)), (*(buffer + CHAR_SIZE)), (*(buffer + (CHAR_SIZE*2))), encodedText);
 			}
 
-			fprintf(outputFile, buffer);
+			fputs( buffer, outputFile);
 
 		} while (numCharsRead > 0);
 		delete buffer;
 	}
 	
 	//Write last line(s)
-	fprintf(outputFile,"`\n");
-	fprintf(outputFile, "end\n");
+	fputs("`\n", outputFile);
+	fputs("end\n", outputFile);
 	//Close file streams
 	fclose(inputFile);
 	fclose(outputFile);
 
 	//Delete various char arrays
 	delete uueFile;
-	
+	return 0;
 
 }
 
@@ -230,6 +230,7 @@ int uudecode(const char *InputFilename)
 	int numCharsInDocument = 0;
 	int trash;
 	bool isLastLine = false;
+	char * trashString = new char[10];
 	char A, B, C, w, x, y, z;
 	w &= 0;
 	x &= 0;
@@ -278,8 +279,9 @@ int uudecode(const char *InputFilename)
 
 	else
 	{
-		fscanf(inputFile, "%s");
-		fscanf(inputFile, "%s");
+		fscanf(inputFile, "%s", trashString);
+		fscanf(inputFile, "%s",trashString);
+		delete trashString;
 		fscanf(inputFile, "%s", outputFilename);
 
 		char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
@@ -344,5 +346,5 @@ int uudecode(const char *InputFilename)
 	}
 
 	fclose(inputFile);
-
+	return 0;
 }
