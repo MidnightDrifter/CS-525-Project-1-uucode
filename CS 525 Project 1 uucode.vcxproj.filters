@@ -68,5 +68,8 @@
     <Text Include="DecodingAlgorithmIdea.txt">
       <Filter>Other</Filter>
     </Text>
+    <Text Include="EncodeDecodeClarification.txt">
+      <Filter>Other</Filter>
+    </Text>
   </ItemGroup>
 </Project>

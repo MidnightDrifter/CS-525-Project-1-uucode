@@ -1,0 +1,4 @@
+Encoding:  ouputs encoded text TO SCREEN, user must redirect it to a file
+Decoding:  outputs decoded text TO FILE specified inside encoded file
+
+herp derp
