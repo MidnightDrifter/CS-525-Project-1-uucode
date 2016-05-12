@@ -201,7 +201,7 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 				encode((*(buffer)), (*(buffer + CHAR_SIZE)), (*(buffer + (CHAR_SIZE*2))), encodedText);
 			}
 
-			fputs( buffer, outputFile);
+			puts( buffer);
 
 		} while (numCharsRead > 0);
 		delete buffer;
@@ -284,6 +284,8 @@ int uudecode(const char *InputFilename)
 		delete trashString;
 		fscanf(inputFile, "%s", outputFilename);
 
+		FILE * outputFile = fopen(outputFilename, "wb");  //Double check this--wb for write binary or just w?
+
 		char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
 
 		numCharsOnCurrentLine = (fgetc(inputFile) - 32);
@@ -306,7 +308,7 @@ int uudecode(const char *InputFilename)
 			else
 			{
 				fscanf(inputFile, "%4s", decodedText);
-				puts(decodedText);
+				fputs(decodedText, outputFile);
 				numCharsRead += 4;
 
 			}
