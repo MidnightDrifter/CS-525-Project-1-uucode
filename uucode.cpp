@@ -47,15 +47,9 @@ void encode(char a, char b, char c, char * encodedCharacters)
 		int i;
 	for (i = 0; i < 4; i++)
 	{
-		if ((*(encodedCharacters + (sizeof(char)*i))) == 0)
-		{
-			(*(encodedCharacters + (sizeof(char)*i))) = 96;
-		}
-
-		else
-		{
-			(*(encodedCharacters + (sizeof(char)*i))) += 32;
-		}
+		
+			(*(encodedCharacters + (sizeof(char)*i))) += OFFSET;
+		
 
 	}
 
@@ -86,16 +80,10 @@ void decode(char a, char b, char c, char d, char * decodedCharacters)
 	int i;
 	for (i = 0; i < 3; i++)
 	{
-		if ((*(decodedCharacters + (sizeof(char)*i))) == 64)
-		{	//It's a space?  uuuhhh...
-			(*(decodedCharacters + (sizeof(char)*i))) = 32;
-		}
+		
+			(*(decodedCharacters + (sizeof(char)*i))) -= OFFSET;
 
-		else
-		{
-			(*(decodedCharacters + (sizeof(char)*i))) -= 32;
-
-		}
+		
 	
 	}
 }
@@ -147,7 +135,7 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 
 		if (numCharsInDocument < 45)
 		{
-			putchar((numCharsInDocument + 32));
+			putchar((numCharsInDocument + OFFSET));
 		}
 
 
@@ -165,7 +153,7 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 				
 				if (numCharsInDocument < 45)
 				{
-					putchar((numCharsInDocument + 32));
+					putchar((numCharsInDocument + OFFSET));
 				}
 
 				else
@@ -281,7 +269,7 @@ int uudecode(const char *InputFilename)
 			//Read file here
 			if (numCharsRead >= numCharsOnCurrentLine)
 			{//Next character should be the first character in a line--the # of characters in that line
-				numCharsOnCurrentLine = (fgetc(inputFile)) - 32;
+				numCharsOnCurrentLine = (fgetc(inputFile)) - OFFSET;
 
 
 			}
