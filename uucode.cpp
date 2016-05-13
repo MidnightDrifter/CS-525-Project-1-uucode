@@ -105,21 +105,14 @@ void decode(char a, char b, char c, char d, char * decodedCharacters)
 
 int uuencode(const char *InputFilename, const char *RemoteFilename)
 {
-	// Text OR Binary file -> text file
-	FILE * inputFile = fopen(InputFilename, "rb");
+	// Text OR Binary file -> stdout file
+	FILE * inputFile;
+	inputFile = fopen(InputFilename, "rb");
 	
 	int numCharsInDocument = 0;
 	int trash;
 	int len = strlen(InputFilename);  //Get the filename, copy it, change the copy to end in ".uue"
-	char * uueFile = new char[len];
-	strcpy(uueFile, InputFilename);
-	*(uueFile + (sizeof(char) - 4)) = '.';
-	*(uueFile + (sizeof(char) - 3)) = 'u';
-	*(uueFile + (sizeof(char) - 2)) = 'u';
-	*(uueFile + (sizeof(char) - 1)) = 'e';
 
-
-	FILE * outputFile = fopen(uueFile, "w");  //Double check later, might need to use w+ instead
 	int numCharsRead = 0;
 	int numCharsOnCurrentLine = 0;
 	char a, b, c, d;
@@ -132,10 +125,9 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 	{
 		perror(InputFilename);
 		printf("Error:  file cannot be opened to be read.\n");
-		trash = getchar();
+		//trash = getchar();
 		fclose(inputFile);
-		fclose(outputFile);
-		delete uueFile;
+	
 		return -1;  //Error code of -1 for failing
 	}
 	
@@ -147,21 +139,17 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 
 		}
 		rewind(inputFile);
-		fputs( "begin 644 ",outputFile);
-		fputs( RemoteFilename,outputFile);
-		fputs("\n",outputFile);
+		puts( "begin 644 ");
+		puts( RemoteFilename);
+		puts("\n");
 		char * buffer = new char[SIZE_OF_READ_IN_BUFFER];
 		char * encodedText = new char[SIZE_OF_ENCODED_TEXT_BUFFER];
 
 		if (numCharsInDocument < 45)
 		{
-			putc((numCharsInDocument + 32), outputFile);
+			putchar((numCharsInDocument + 32));
 		}
 
-		else
-		{
-			putc('M', outputFile);
-		}
 
 		do {
 			//Read file here
@@ -172,17 +160,17 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 			if (numCharsOnCurrentLine >= 45)
 			{
 				//Insert newline char, continue alg
-				fprintf(outputFile, "\n");
+				puts("\n");
 				numCharsInDocument-= numCharsOnCurrentLine;
 				
 				if (numCharsInDocument < 45)
 				{
-					putc((numCharsInDocument + 32), outputFile);
+					putchar((numCharsInDocument + 32));
 				}
 
 				else
 				{
-					putc('M', outputFile);
+					putchar('M');
 				}
 			}
 
@@ -208,14 +196,13 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 	}
 	
 	//Write last line(s)
-	fputs("`\n", outputFile);
-	fputs("end\n", outputFile);
-	//Close file streams
+	puts("`\n");
+	puts("end\n");
+	//Close file stream
 	fclose(inputFile);
-	fclose(outputFile);
+	
 
-	//Delete various char arrays
-	delete uueFile;
+
 	return 0;
 
 }
