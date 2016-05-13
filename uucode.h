@@ -16,6 +16,7 @@
 #ifndef UUCODE_H
 #define UUCODE_H
 
+#include <stdio.h>
 
 /**
 \brief  Given a filename, write the remote filename and the encoded text of the given filename
@@ -38,22 +39,21 @@ int uudecode(const char *InputFilename);
 
 
 /**
-\brief  Encode characters in groups of 3
+\brief  Encode characters in groups of 3 and print to stdout
 \param chars a, b, c   The input characters to encode via the uuencode algorithm
-\param char * encodedCharacters  Pointer to a character array to store the encoded characters in--I KNOW the array will have a size of 4, as I'm setting it in my implementation
 \return  N/A
 
 */
-void encode(char a, char b, char c, char * encodedCharacters);
+void encode(char a, char b, char c);
 
 
 /**
-\brief  Decode characters in groups of 3
+\brief  Decode characters in groups of 4 and push them to the specified output file
 \param chars a, b, c, d   The input characters to decode via the uudecode algorithm
 \param char * decodedCharacters   Pointer to the array to store the decoded characters in--I KNOW it will have a size of 3, as I'm setting it in my implementation
 \return  N/A
 */
-void decode(char a, char b, char c, char d, char * decodedCharacters);
+void decode(char a, char b, char c, char d, FILE * file);
 
 
 

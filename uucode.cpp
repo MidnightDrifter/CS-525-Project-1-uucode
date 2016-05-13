@@ -1,10 +1,11 @@
 #include "uucode.h"
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #define CHAR_SIZE sizeof(char)
-#define SIZE_OF_READ_IN_BUFFER 3  //Know for a fact that you'll be (trying) to read in 3 chars at a time
-#define SIZE_OF_WRITE_OUT_BUFFER 4//Know for a fact that you'll be trying to read in 4 chars at a time
-#define SIZE_OF_ENCODED_TEXT_BUFFER 4  //Know for a fact that you'll be writing out 4 chars at a time to encoded file
+#define SIZE_OF_READ_IN_BUFFER 3 //Know for a fact that you'll be (trying) to read in 3 chars at a time
+#define SIZE_OF_WRITE_OUT_BUFFER 4//Know for a fact that you'll be trying to read in 4 chars at a time   
+#define SIZE_OF_ENCODED_TEXT_BUFFER 4  //Know for a fact that you'll be writing out 4 chars at a time to encoded file  
 #define SIZE_OF_DECODED_TEXT_BUFFER 3 //Know for a fact that you'll be writing out 3 chars at a time when decoding
 #define OFFSET 32  //Will try to add 32 to each 6-bit char generated from the 3 read characters
 					//When less than 3 characters are read, pad the RIGHT with 0s
@@ -12,80 +13,89 @@
 
 
 
-void encode(char a, char b, char c, char * encodedCharacters)
+void encode(char a, char b, char c)
 {
-	*encodedCharacters = a;
-	(*encodedCharacters) >>= 2;
-	(*encodedCharacters) &= ~(3 << 6); //3 = 11 in binary, this 0's out the first two bits of encodedCharacters[0]
-	*(encodedCharacters + (sizeof(char)) )= a;
-	*(encodedCharacters + (sizeof(char))) <<= 4;
-	*(encodedCharacters + (sizeof(char))) &= ~(3 << 6);
+	char t1, t2, t3, t4;
+	t1 &= 0;
+	t2 &= 0;
+	t3 &= 0;
+	t4 &= 0;
+
+
+	t1 = a;
+	t1 >>= 2;
+	t1 &= ~(3 << 6); //3 = 11 in binary, this 0's out the first two bits of encodedCharacters[0]
+	
+	t2 <<= 4;
+	t2 &= ~(3 << 6);
 
 	char temp = b;
 
 	temp >>= 4;
 	temp &= ~(15 << 4);  //15 = 1111 in binary, this 0's out the first 4 bits of temp
 	temp |= ~(3 << 6);  //3 = 11 in binary, this sets the 3rd and 4th bits to 1
+	t2 |= temp;
 
-	*(encodedCharacters + (sizeof(char))) |= temp;
 
+	t3 = b;
 
-	*(encodedCharacters + (sizeof(char) * 2)) = b;
-
-	(*(encodedCharacters + (sizeof(char) * 2))) <<= 2;
-	(*(encodedCharacters + (sizeof(char) * 2))) &= (15 << 2);  //0's out the first 2 and last 2 bits
+	t3 <<= 2;
+	t3 &= (15 << 2);  //0's out the first 2 and last 2 bits
 	 
 	temp = c;
 	temp >>= 6;  //Shift bits of temp to right
 	temp &= ~(63 << 2);  //0 out 1st 6 bits of temp
 
-	(*(encodedCharacters + (sizeof(char) * 2))) |= temp;
+	t3 |= temp;
 
-	(*(encodedCharacters + (sizeof(char) * 3))) = c;
-	(*(encodedCharacters + (sizeof(char) * 3))) &= ~(3 << 6); //0 out 1st 2 bits
+	t4 = c;
+	t4 &= ~(3 << 6); //0 out 1st 2 bits
 
-		int i;
-	for (i = 0; i < 4; i++)
-	{
-		
-			(*(encodedCharacters + (sizeof(char)*i))) += OFFSET;
-		
+	t1 += 32;
+	t2 += 32;
+	t3 += 32;
+	t4 += 32;
 
-	}
-
+	putchar(t1);
+	putchar(t2);
+	putchar(t3);
+	putchar(t4);
 
 }
 
 
-void decode(char a, char b, char c, char d, char * decodedCharacters)
+void decode(char a, char b, char c, char d, FILE * file)
 {
-	*decodedCharacters = a;
-	*decodedCharacters <<= 2;  //Shift left 2, guaranteed to 0 out last 2 digits
+	char t1, t2, t3;
+	t1 &= 0;
+	t2 &= 0;
+	t3 &= 0;
+	t1 = a;
+	t1 <<= 2;  //Shift left 2, guaranteed to 0 out last 2 digits
 	char temp = b;
 	temp >>= 6;  //If encoded properly, chars a-d shouls all have 2 leading 0's, so you're sure to 0 out the 1st 6 bits
-	*decodedCharacters |= temp;
+	t1 |= temp;
 
-	*(decodedCharacters + (sizeof(char))) = b;
-	*(decodedCharacters + (sizeof(char))) <<= 4;
+	t2 = b;
+	t2 <<= 4;
 
 	temp = c;
 	temp >>= 2;
-	*(decodedCharacters + (sizeof(char))) |= temp;
+	t2 |= temp;
 
-	*(decodedCharacters + (sizeof(char) * 2)) = c;
-	*(decodedCharacters + (sizeof(char) * 2)) <<= 6;
-	*(decodedCharacters + (sizeof(char) * 2)) |= d;
+	t3 = c;
+	t3 <<= 6;
+	t3 |= d;
 
 
-	int i;
-	for (i = 0; i < 3; i++)
-	{
-		
-			(*(decodedCharacters + (sizeof(char)*i))) -= OFFSET;
+	t1 -= 32;
+	t2 -= 32;
+	t3 -= 32;
 
-		
-	
-	}
+	putc(t1, file);
+	putc(t2, file);
+	putc(t3, file);
+
 }
 
 
@@ -99,8 +109,7 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 	
 	int numCharsInDocument = 0;
 	int trash;
-	int len = strlen(InputFilename);  //Get the filename, copy it, change the copy to end in ".uue"
-
+	
 	int numCharsRead = 0;
 	int numCharsOnCurrentLine = 0;
 	char a, b, c, d;
@@ -127,15 +136,27 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 
 		}
 		rewind(inputFile);
-		puts( "begin 644 ");
+		//puts( "begin 644 ");
+		printf("begin 644 ");
 		puts( RemoteFilename);
-		puts("\n");
-		char * buffer = new char[SIZE_OF_READ_IN_BUFFER];
-		char * encodedText = new char[SIZE_OF_ENCODED_TEXT_BUFFER];
+	
+		//char * buffer = new char[SIZE_OF_READ_IN_BUFFER];
+		//char * encodedText = new char[SIZE_OF_ENCODED_TEXT_BUFFER];
+
+		//char  buffer[4] = { '0', '0', '0', '\0'};
+		//char encodedText[5] = { '0', '0',  '0',  '0','\0' };
+
+		char buffer[SIZE_OF_READ_IN_BUFFER] = { '1','1','1' };
+		//char encodedText[SIZE_OF_ENCODED_TEXT_BUFFER];
 
 		if (numCharsInDocument < 45)
 		{
 			putchar((numCharsInDocument + OFFSET));
+		}
+
+		else
+		{
+			putchar('M');
 		}
 
 
@@ -164,28 +185,28 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 
 			if (numCharsRead == 1)
 			{
-				encode((*(buffer)), '0', '0', encodedText);
+				encode((*(buffer)), '0', '0');
 			}
 
 			if (numCharsRead == 2)
 			{
-				encode((*(buffer)), (*(buffer + CHAR_SIZE)), '0', encodedText);
+				encode((*(buffer)), (*(buffer + CHAR_SIZE)), '0');
 			}
 
 			if (numCharsRead == 3)
 			{
-				encode((*(buffer)), (*(buffer + CHAR_SIZE)), (*(buffer + (CHAR_SIZE*2))), encodedText);
+				encode((*(buffer)), (*(buffer + CHAR_SIZE)), (*(buffer + (CHAR_SIZE*2))));
 			}
 
-			puts( buffer);
+		//	puts(encodedText);
 
 		} while (numCharsRead > 0);
-		delete buffer;
+		//delete[] &buffer;   Don't need to delete array defined with {} brackets?
 	}
-	
+
 	//Write last line(s)
-	puts("`\n");
-	puts("end\n");
+	puts("\n`");
+	puts("end");
 	//Close file stream
 	fclose(inputFile);
 	
@@ -261,7 +282,7 @@ int uudecode(const char *InputFilename)
 
 		FILE * outputFile = fopen(outputFilename, "wb");  //Double check this--wb for write binary or just w?
 
-		char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
+		char buffer[SIZE_OF_WRITE_OUT_BUFFER] = { '0', '0', '0', '\0' };
 
 		numCharsOnCurrentLine = (fgetc(inputFile) - 32);
 
@@ -316,8 +337,8 @@ int uudecode(const char *InputFilename)
 		//Write last line(s)
 		//Close file streams
 		delete outputFilename;
-		delete buffer;
-		delete decodedText;
+		delete[] &buffer;
+		delete[] &decodedText;
 		
 
 	}
