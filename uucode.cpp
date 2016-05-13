@@ -105,21 +105,14 @@ void decode(char a, char b, char c, char d, char * decodedCharacters)
 
 int uuencode(const char *InputFilename, const char *RemoteFilename)
 {
-	// Text OR Binary file -> text file
-	FILE * inputFile = fopen(InputFilename, "rb");
+	// Text OR Binary file -> stdout file
+	FILE * inputFile;
+	inputFile = fopen(InputFilename, "rb");
 	
 	int numCharsInDocument = 0;
 	int trash;
-	int len = strlen(InputFilename)+4;  //Get the filename, copy it, change the copy to end in ".uue"
-	char * uueFile = new char[len];
-	strcpy(uueFile, InputFilename);
-	*(uueFile + ((sizeof(char)*len) -(sizeof(char) * 4))) = '.';
-	*(uueFile + ((sizeof(char)*len) - (sizeof(char) * 3))) = 'u';
-	*(uueFile + ((sizeof(char)*len) - (sizeof(char) * 2))) = 'u';
-	*(uueFile + ((sizeof(char)*len) - (sizeof(char)))) = 'e';
+	int len = strlen(InputFilename);  //Get the filename, copy it, change the copy to end in ".uue"
 
-
-	FILE * outputFile = fopen(uueFile, "w");  //Double check later, might need to use w+ instead
 	int numCharsRead = 0;
 	int numCharsOnCurrentLine = 0;
 	char a, b, c, d;
@@ -132,37 +125,31 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 	{
 		perror(InputFilename);
 		printf("Error:  file cannot be opened to be read.\n");
-		trash = getchar();
+		//trash = getchar();
 		fclose(inputFile);
-		fclose(outputFile);
-		delete uueFile;
+	
 		return -1;  //Error code of -1 for failing
 	}
 	
 	else
-	{
-		char * buffer = new char[SIZE_OF_READ_IN_BUFFER];
-		char * encodedText = new char[SIZE_OF_ENCODED_TEXT_BUFFER];
+	{ 
 		while ((trash = fgetc(inputFile)) != EOF)
 		{
 			numCharsInDocument++;
 
 		}
 		rewind(inputFile);
-		fputs( "begin 644 ",outputFile);
-		fputs( RemoteFilename,outputFile);
-		fputs("\n",outputFile);
-
+		puts( "begin 644 ");
+		puts( RemoteFilename);
+		puts("\n");
+		char * buffer = new char[SIZE_OF_READ_IN_BUFFER];
+		char * encodedText = new char[SIZE_OF_ENCODED_TEXT_BUFFER];
 
 		if (numCharsInDocument < 45)
 		{
-			putc((numCharsInDocument + 32), outputFile);
+			putchar((numCharsInDocument + 32));
 		}
 
-		else
-		{
-			putc('M', outputFile);
-		}
 
 		do {
 			//Read file here
@@ -173,17 +160,17 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 			if (numCharsOnCurrentLine >= 45)
 			{
 				//Insert newline char, continue alg
-				fprintf(outputFile, "\n");
+				puts("\n");
 				numCharsInDocument-= numCharsOnCurrentLine;
 				
 				if (numCharsInDocument < 45)
 				{
-					putc((numCharsInDocument + 32), outputFile);
+					putchar((numCharsInDocument + 32));
 				}
 
 				else
 				{
-					putc('M', outputFile);
+					putchar('M');
 				}
 			}
 
@@ -202,21 +189,20 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 				encode((*(buffer)), (*(buffer + CHAR_SIZE)), (*(buffer + (CHAR_SIZE*2))), encodedText);
 			}
 
-			fputs( buffer, outputFile);
+			puts( buffer);
 
 		} while (numCharsRead > 0);
 		delete buffer;
 	}
 	
 	//Write last line(s)
-	fputs("`\n", outputFile);
-	fputs("end\n", outputFile);
-	//Close file streams
+	puts("`\n");
+	puts("end\n");
+	//Close file stream
 	fclose(inputFile);
-	fclose(outputFile);
+	
 
-	//Delete various char arrays
-	delete uueFile;
+
 	return 0;
 
 }
@@ -241,8 +227,7 @@ int uudecode(const char *InputFilename)
 	B &= 0;
 	C &= 0;
 
-	char * outputFilename = new char[53];
-	char * decodedText = new char[SIZE_OF_DECODED_TEXT_BUFFER];
+
 
 	while ((trash = fgetc(inputFile)) != EOF)
 	{
@@ -268,7 +253,8 @@ int uudecode(const char *InputFilename)
 	//Filenames cannot have spaces
 
 	//Figure out the [filename].txt length, or just set it to a large-ish size and leave it at that?
-
+	char * outputFilename = new char[53];
+	char * decodedText = new char[SIZE_OF_DECODED_TEXT_BUFFER];
 	if (!inputFile)
 	{
 		perror(InputFilename);
@@ -284,6 +270,8 @@ int uudecode(const char *InputFilename)
 		fscanf(inputFile, "%s",trashString);
 		delete trashString;
 		fscanf(inputFile, "%s", outputFilename);
+
+		FILE * outputFile = fopen(outputFilename, "wb");  //Double check this--wb for write binary or just w?
 
 		char * buffer = new char[SIZE_OF_WRITE_OUT_BUFFER];
 
@@ -307,7 +295,7 @@ int uudecode(const char *InputFilename)
 			else
 			{
 				fscanf(inputFile, "%4s", decodedText);
-				puts(decodedText);
+				fputs(decodedText, outputFile);
 				numCharsRead += 4;
 
 			}
