@@ -263,7 +263,7 @@ int uudecode(const char *InputFilename)
 
 	//Figure out the [filename].txt length, or just set it to a large-ish size and leave it at that?
 	char * outputFilename = new char[53];
-	char * decodedText = new char[SIZE_OF_DECODED_TEXT_BUFFER];
+	//char * decodedText = new char[SIZE_OF_DECODED_TEXT_BUFFER];
 	if (!inputFile)
 	{
 		perror(InputFilename);
@@ -303,8 +303,8 @@ int uudecode(const char *InputFilename)
 
 			else
 			{
-				fscanf(inputFile, "%4s", decodedText);
-				fputs(decodedText, outputFile);
+				fscanf(inputFile, "%4s", buffer);
+				//fputs(decodedText, outputFile);
 				numCharsRead += 4;
 
 			}
@@ -337,8 +337,8 @@ int uudecode(const char *InputFilename)
 		//Write last line(s)
 		//Close file streams
 		delete outputFilename;
-		delete[] &buffer;
-		delete[] &decodedText;
+	//	delete[] &buffer;
+		//delete[] &decodedText;
 		
 
 	}
