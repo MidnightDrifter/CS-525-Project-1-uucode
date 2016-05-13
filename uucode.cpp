@@ -110,13 +110,13 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 	
 	int numCharsInDocument = 0;
 	int trash;
-	int len = strlen(InputFilename);  //Get the filename, copy it, change the copy to end in ".uue"
+	int len = strlen(InputFilename)+4;  //Get the filename, copy it, change the copy to end in ".uue"
 	char * uueFile = new char[len];
 	strcpy(uueFile, InputFilename);
-	*(uueFile + (sizeof(char) - 4)) = '.';
-	*(uueFile + (sizeof(char) - 3)) = 'u';
-	*(uueFile + (sizeof(char) - 2)) = 'u';
-	*(uueFile + (sizeof(char) - 1)) = 'e';
+	*(uueFile + ((sizeof(char)*len) -(sizeof(char) * 4))) = '.';
+	*(uueFile + ((sizeof(char)*len) - (sizeof(char) * 3))) = 'u';
+	*(uueFile + ((sizeof(char)*len) - (sizeof(char) * 2))) = 'u';
+	*(uueFile + ((sizeof(char)*len) - (sizeof(char)))) = 'e';
 
 
 	FILE * outputFile = fopen(uueFile, "w");  //Double check later, might need to use w+ instead
@@ -140,7 +140,9 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 	}
 	
 	else
-	{ 
+	{
+		char * buffer = new char[SIZE_OF_READ_IN_BUFFER];
+		char * encodedText = new char[SIZE_OF_ENCODED_TEXT_BUFFER];
 		while ((trash = fgetc(inputFile)) != EOF)
 		{
 			numCharsInDocument++;
@@ -150,8 +152,7 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 		fputs( "begin 644 ",outputFile);
 		fputs( RemoteFilename,outputFile);
 		fputs("\n",outputFile);
-		char * buffer = new char[SIZE_OF_READ_IN_BUFFER];
-		char * encodedText = new char[SIZE_OF_ENCODED_TEXT_BUFFER];
+
 
 		if (numCharsInDocument < 45)
 		{
@@ -240,7 +241,8 @@ int uudecode(const char *InputFilename)
 	B &= 0;
 	C &= 0;
 
-
+	char * outputFilename = new char[53];
+	char * decodedText = new char[SIZE_OF_DECODED_TEXT_BUFFER];
 
 	while ((trash = fgetc(inputFile)) != EOF)
 	{
@@ -266,8 +268,7 @@ int uudecode(const char *InputFilename)
 	//Filenames cannot have spaces
 
 	//Figure out the [filename].txt length, or just set it to a large-ish size and leave it at that?
-	char * outputFilename = new char[53];
-	char * decodedText = new char[SIZE_OF_DECODED_TEXT_BUFFER];
+
 	if (!inputFile)
 	{
 		perror(InputFilename);
