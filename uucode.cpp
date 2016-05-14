@@ -26,14 +26,16 @@ void encode(char a, char b, char c)
 	t1 >>= 2;
 	t1 &= ~(3 << 6); //3 = 11 in binary, this 0's out the first two bits of encodedCharacters[0]
 	
+	t2 = a;
 	t2 <<= 4;
 	t2 &= ~(3 << 6);
+	
 
 	char temp = b;
 
 	temp >>= 4;
 	temp &= ~(15 << 4);  //15 = 1111 in binary, this 0's out the first 4 bits of temp
-	temp |= ~(3 << 6);  //3 = 11 in binary, this sets the 3rd and 4th bits to 1
+	//temp |= ~(3 << 6);  //3 = 11 in binary, this sets the 3rd and 4th bits to 1
 	t2 |= temp;  //**  THE ISSUE SEEMS TO BE WITH THE 2nd ENCODED CHARACTER!!!
 
 
