@@ -34,7 +34,7 @@ void encode(char a, char b, char c)
 	temp >>= 4;
 	temp &= ~(15 << 4);  //15 = 1111 in binary, this 0's out the first 4 bits of temp
 	temp |= ~(3 << 6);  //3 = 11 in binary, this sets the 3rd and 4th bits to 1
-	t2 |= temp;
+	t2 |= temp;  //**  THE ISSUE SEEMS TO BE WITH THE 2nd ENCODED CHARACTER!!!
 
 
 	t3 = b;
@@ -303,7 +303,7 @@ int uudecode(const char *InputFilename)
 
 			else
 			{
-				fscanf(inputFile, "%4s", buffer);
+				fscanf(inputFile, "%4c", buffer);
 				//fputs(decodedText, outputFile);
 				numCharsRead += 4;
 
