@@ -50,7 +50,7 @@ void encode(char a, char b, char c);
 /**
 \brief  Decode characters in groups of 4 and push them to the specified output file
 \param chars a, b, c, d   The input characters to decode via the uudecode algorithm
-\param char * decodedCharacters   Pointer to the array to store the decoded characters in--I KNOW it will have a size of 3, as I'm setting it in my implementation
+\param FILE * file    The file stream pointer to output the decoded characters to
 \return  N/A
 */
 void decode(char a, char b, char c, char d, FILE * file);
