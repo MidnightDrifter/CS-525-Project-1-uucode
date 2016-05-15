@@ -58,6 +58,25 @@ void encode(char a, char b, char c)
 	t3 += 32;
 	t4 += 32;
 
+
+	//ASCII 32 = SPACE, want ` instead
+	if (t1 == 32)
+	{
+		t1 = '`';
+	}
+	if (t2 == 32)
+	{
+		t2 = '`';
+	}
+	if (t3 == 32)
+	{
+		t3 = '`';
+	}
+	if (t4 == 32)
+	{
+		t4 = '`';
+	}
+
 	putchar(t1);
 	putchar(t2);
 	putchar(t3);
@@ -171,8 +190,9 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 			if (numCharsOnCurrentLine >= 45)
 			{
 				//Insert newline char, continue alg
-				puts("\n");
+				putchar('\n');
 				numCharsInDocument-= numCharsOnCurrentLine;
+				numCharsOnCurrentLine = 0;
 				
 				if (numCharsInDocument < 45)
 				{
@@ -187,19 +207,19 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 
 			if (numCharsRead == 1)
 			{
-				encode((*(buffer)), 'NUL', 'NUL');
+				encode((*(buffer)), '\0', '\0');
 			}
 
 			if (numCharsRead == 2)
 			{
-				encode((*(buffer)), (*(buffer + CHAR_SIZE)), 'NUL');
+				encode((*(buffer)), (*(buffer + CHAR_SIZE)), '\0');
 			}
 
 			if (numCharsRead == 3)
 			{
 				encode((*(buffer)), (*(buffer + CHAR_SIZE)), (*(buffer + (CHAR_SIZE*2))));
 			}
-
+			numCharsOnCurrentLine += 3;
 		//	puts(encodedText);
 
 		} while (numCharsRead > 0);
@@ -286,12 +306,14 @@ int uudecode(const char *InputFilename)
 
 		char buffer[SIZE_OF_WRITE_OUT_BUFFER] = { '0', '0', '0', '\0' };
 
-		numCharsOnCurrentLine = (fgetc(inputFile) - 32);
+		numCharsOnCurrentLine = (fgetc(inputFile) - OFFSET);
 
 		do {
 			//Read file here
 			if (numCharsRead >= numCharsOnCurrentLine)
-			{//Next character should be the first character in a line--the # of characters in that line
+			{
+				fputc('\n', outputFile);
+				//Next character should be the first character in a line--the # of characters in that line
 				numCharsOnCurrentLine = (fgetc(inputFile)) - OFFSET;
 
 
@@ -307,6 +329,8 @@ int uudecode(const char *InputFilename)
 			{
 				fscanf(inputFile, "%4c", buffer);
 				//fputs(decodedText, outputFile);
+				
+				decode((*buffer), (*(buffer + sizeof(char))), (*(buffer + sizeof(char) * 2)), (*(buffer + sizeof(char) * 3)), outputFile);
 				numCharsRead += 4;
 
 			}
