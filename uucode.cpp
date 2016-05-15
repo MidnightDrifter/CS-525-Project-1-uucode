@@ -87,35 +87,54 @@ void encode(char a, char b, char c)
 
 void decode(char a, char b, char c, char d, FILE * file)
 {
-	char t1, t2, t3;
+	char t1, t2, t3, tA, tB, tC, tD;
+
+	tA = a - 32;
+	tB = b - 32;
+	tC = c - 32;
+	tD = d - 32;
+
+
 	t1 &= 0;
 	t2 &= 0;
 	t3 &= 0;
-	t1 = a;
+	t1 = tA;
 	t1 <<= 2;  //Shift left 2, guaranteed to 0 out last 2 digits
-	char temp = b;
-	temp >>= 6;  //If encoded properly, chars a-d shouls all have 2 leading 0's, so you're sure to 0 out the 1st 6 bits
+	char temp = tB;
+	temp &= ~(3 << 6);
+	temp >>= 4;  //If encoded properly, chars a-d should all have 2 leading 0's, so you're sure to 0 out the 1st 6 bits.  0 them out manually to be sure
 	t1 |= temp;
 
-	t2 = b;
+	t2 = tB;
 	t2 <<= 4;
 
-	temp = c;
+	temp =tC;
+	temp &= ~(3 << 6);
 	temp >>= 2;
 	t2 |= temp;
 
-	t3 = c;
+	t3 = tC;
 	t3 <<= 6;
-	t3 |= d;
+	temp = tD;
+	temp &= ~(3 << 6);
+	t3 |= temp;
 
 
-	t1 -= 32;
-	t2 -= 32;
-	t3 -= 32;
-
-	putc(t1, file);
-	putc(t2, file);
-	putc(t3, file);
+	//t1 += 32;
+	//t2 += 32;
+	//t3 += 32;
+	if (t1 != '\0')
+	{
+		putc(t1, file);
+	}
+	if (t2 != '\0')
+	{
+		putc(t2, file);
+	}
+	if (t3 != '\0')
+	{
+		putc(t3, file);
+	}
 
 }
 
@@ -167,8 +186,9 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 		//char  buffer[4] = { '0', '0', '0', '\0'};
 		//char encodedText[5] = { '0', '0',  '0',  '0','\0' };
 
-		char buffer[SIZE_OF_READ_IN_BUFFER] = { '1','1','1' };
+		//char buffer[SIZE_OF_READ_IN_BUFFER] = { '1','1','1' };
 		//char encodedText[SIZE_OF_ENCODED_TEXT_BUFFER];
+		char * buffer = new char[3];
 
 		if (numCharsInDocument < 45)
 		{
@@ -223,7 +243,7 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 		//	puts(encodedText);
 
 		} while (numCharsRead > 0);
-		//delete[] &buffer;   Don't need to delete array defined with {} brackets?
+		delete[] buffer;  // Don't need to delete array defined with {} brackets?
 	}
 
 	//Write last line(s)
@@ -245,9 +265,9 @@ int uudecode(const char *InputFilename)
 	FILE * inputFile = fopen(InputFilename, "r");
 	int numCharsRead = 0;
 	int numCharsOnCurrentLine = 60;
-	int numCharsInDocument = 0;
-	int trash;
-	bool isLastLine = false;
+	//int numCharsInDocument = 0;
+	//int trash;
+	//bool isLastLine = false;
 	char * trashString = new char[10];
 	char A, B, C, w, x, y, z;
 	w &= 0;
@@ -258,27 +278,7 @@ int uudecode(const char *InputFilename)
 	B &= 0;
 	C &= 0;
 
-	/*
-
-	while ((trash = fgetc(inputFile)) != EOF)
-	{
-		numCharsInDocument++;
-
-	}
-	rewind(inputFile);
-	*/
-/*
-	int lengthOfFilename = 0;
-	char temp2 = 123;
-	while (temp2 != NULL)
-	{
 	
-		temp2 = *(InputFilename + lengthOfFilename);
-		lengthOfFilename++;
-	}
-	lengthOfFilename += 3;
-	*/
-	//char * trashBuffer = new char[lengthOfFilename];
 
 
 	//Read in first line--3 fseekf, to get through the 2 spaces and 1 newline?  Or can filenames have spaces in 'em?
@@ -292,7 +292,6 @@ int uudecode(const char *InputFilename)
 		perror(InputFilename);
 		printf("Error:  file cannot be opened to be read.\n");
 		fclose(inputFile);
-		trash = getchar();
 		return -1;  //Error code of -1 for failing
 	}
 
@@ -300,15 +299,16 @@ int uudecode(const char *InputFilename)
 	{
 		fscanf(inputFile, "%s", trashString);
 		fscanf(inputFile, "%s",trashString);
-		delete trashString;
+		delete[] trashString;
 		fscanf(inputFile, "%s", outputFilename);
 
 		FILE * outputFile = fopen(outputFilename, "wb");  //Double check this--wb for write binary or just w?
 
-		char buffer[SIZE_OF_WRITE_OUT_BUFFER] = { '0', '0', '0', '0' };
-
+		//char buffer[SIZE_OF_WRITE_OUT_BUFFER] = { '0', '0', '0', '0' };
+		char * buffer = new char[4];
+		fgetc(inputFile);  //get rid of newline char
 		//numCharsOnCurrentLine = (fgetc(inputFile) - OFFSET);
-		numCharsOnCurrentLine = fgetc(inputFile)-2; //Need to subtract 2 to account for the newline characters?
+		numCharsOnCurrentLine = fgetc(inputFile)-32; //Need to subtract 2 to account for the newline characters?
 
 		do {
 			//Read file here
@@ -319,7 +319,7 @@ int uudecode(const char *InputFilename)
 				
 				//numCharsInDocument -= numCharsRead;
 				//numCharsRead = fgetc(inputFile);  //Setting it to 0 anyways, so just trash the '\n' character here
-				numCharsOnCurrentLine = (fgetc(inputFile)) - 2;
+				numCharsOnCurrentLine = (fgetc(inputFile)) - 32;
 				numCharsRead = 0;
 
 
@@ -332,25 +332,30 @@ int uudecode(const char *InputFilename)
 				//fscanf(inputFile, "%4c", buffer);
 				//fputs(decodedText, outputFile);
 				//fgets(buffer, 4, inputFile);
-				int i;
+				/*int i;
 				char tempThing;
 				for (i = 0; i < 4; i++)
 				{
 					tempThing = fgetc(inputFile);
 					(*(buffer + (CHAR_SIZE*i))) = tempThing;
 				}
+				*/
+
+				fread(buffer, CHAR_SIZE, 4, inputFile);
 				decode((*buffer), (*(buffer + sizeof(char))), (*(buffer + sizeof(char) * 2)), (*(buffer + sizeof(char) * 3)), outputFile);
 				numCharsRead += 4;
 
 			}
 
 			
-		} while (numCharsOnCurrentLine+2 != '`');
+		} while (numCharsOnCurrentLine != 64);
 
 		//Write last line(s)
 		//Close file streams
-		delete outputFilename;
-	//	delete[] &buffer;
+		
+		delete[] buffer;
+		
+		delete[] outputFilename;
 		//delete[] &decodedText;
 		
 
