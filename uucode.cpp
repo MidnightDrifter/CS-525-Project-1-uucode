@@ -263,7 +263,7 @@ int uudecode(const char *InputFilename)
 {
 	//Text file -> decode and write to stdout
 	FILE * inputFile = fopen(InputFilename, "r");
-	int numCharsRead = 0;
+	int numCharsOutputted = 0;
 	int numCharsOnCurrentLine = 60;
 	//int numCharsInDocument = 0;
 	//int trash;
@@ -312,7 +312,7 @@ int uudecode(const char *InputFilename)
 
 		do {
 			//Read file here
-			if (numCharsRead >= numCharsOnCurrentLine)
+			if (numCharsOutputted >= numCharsOnCurrentLine)
 			{
 				//fputc('\n', outputFile);
 				//Next character should be a newline, then the first character in a line--the # of characters in that line
@@ -320,7 +320,7 @@ int uudecode(const char *InputFilename)
 				//numCharsInDocument -= numCharsRead;
 				//numCharsRead = fgetc(inputFile);  //Setting it to 0 anyways, so just trash the '\n' character here
 				numCharsOnCurrentLine = (fgetc(inputFile)) - 32;
-				numCharsRead = 0;
+				numCharsOutputted = 0;
 
 
 			}
@@ -343,7 +343,7 @@ int uudecode(const char *InputFilename)
 
 				fread(buffer, CHAR_SIZE, 4, inputFile);
 				decode((*buffer), (*(buffer + sizeof(char))), (*(buffer + sizeof(char) * 2)), (*(buffer + sizeof(char) * 3)), outputFile);
-				numCharsRead += 4;
+				numCharsOutputted += 3;  
 
 			}
 
