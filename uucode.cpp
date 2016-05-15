@@ -304,7 +304,7 @@ int uudecode(const char *InputFilename)
 
 		FILE * outputFile = fopen(outputFilename, "wb");  //Double check this--wb for write binary or just w?
 
-		char buffer[SIZE_OF_WRITE_OUT_BUFFER] = { '0', '0', '0', '\0' };
+		char buffer[SIZE_OF_WRITE_OUT_BUFFER] = { '0', '0', '0', '0' };
 
 		numCharsOnCurrentLine = (fgetc(inputFile) - OFFSET);
 
@@ -312,53 +312,38 @@ int uudecode(const char *InputFilename)
 			//Read file here
 			if (numCharsRead >= numCharsOnCurrentLine)
 			{
-				fputc('\n', outputFile);
-				//Next character should be the first character in a line--the # of characters in that line
+				//fputc('\n', outputFile);
+				//Next character should be a newline, then the first character in a line--the # of characters in that line
+				
+				numCharsInDocument -= numCharsRead;
+				numCharsRead = fgetc(inputFile);  //Setting it to 0 anyways, so just trash the '\n' character here
 				numCharsOnCurrentLine = (fgetc(inputFile)) - OFFSET;
+				numCharsRead = 0;
 
 
 			}
 
-			if (numCharsOnCurrentLine == 0)
-			{
-				isLastLine = true;
-				puts("\n");
-			}
+	
 
 			else
 			{
-				fscanf(inputFile, "%4c", buffer);
+				//fscanf(inputFile, "%4c", buffer);
 				//fputs(decodedText, outputFile);
-				
+				//fgets(buffer, 4, inputFile);
+				int i;
+				char tempThing;
+				for (i = 0; i < 4; i++)
+				{
+					tempThing = fgetc(inputFile);
+					(*(buffer + (CHAR_SIZE*i))) = tempThing;
+				}
 				decode((*buffer), (*(buffer + sizeof(char))), (*(buffer + sizeof(char) * 2)), (*(buffer + sizeof(char) * 3)), outputFile);
 				numCharsRead += 4;
 
 			}
 
-			//numCharsRead = fread(buffer, CHAR_SIZE, SIZE_OF_WRITE_OUT_BUFFER, inputFile);
-
-			/*
-			if (numCharsRead == 1)
-			{
-
-			}
-
-			if (numCharsRead == 2)
-			{
-
-			}
-
-			if (numCharsRead == 3)
-			{
-
-			}
-
-			if (numCharsRead == 4)
-			{
-
-			}
-			*/
-		} while (!isLastLine);
+			
+		} while (numCharsOnCurrentLine != '@');
 
 		//Write last line(s)
 		//Close file streams
