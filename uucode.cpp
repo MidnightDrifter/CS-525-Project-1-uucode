@@ -187,12 +187,12 @@ int uuencode(const char *InputFilename, const char *RemoteFilename)
 
 			if (numCharsRead == 1)
 			{
-				encode((*(buffer)), '0', '0');
+				encode((*(buffer)), 'NUL', 'NUL');
 			}
 
 			if (numCharsRead == 2)
 			{
-				encode((*(buffer)), (*(buffer + CHAR_SIZE)), '0');
+				encode((*(buffer)), (*(buffer + CHAR_SIZE)), 'NUL');
 			}
 
 			if (numCharsRead == 3)
