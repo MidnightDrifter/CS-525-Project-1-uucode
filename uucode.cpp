@@ -258,7 +258,7 @@ int uudecode(const char *InputFilename)
 	B &= 0;
 	C &= 0;
 
-
+	/*
 
 	while ((trash = fgetc(inputFile)) != EOF)
 	{
@@ -266,6 +266,7 @@ int uudecode(const char *InputFilename)
 
 	}
 	rewind(inputFile);
+	*/
 /*
 	int lengthOfFilename = 0;
 	char temp2 = 123;
@@ -306,7 +307,8 @@ int uudecode(const char *InputFilename)
 
 		char buffer[SIZE_OF_WRITE_OUT_BUFFER] = { '0', '0', '0', '0' };
 
-		numCharsOnCurrentLine = (fgetc(inputFile) - OFFSET);
+		//numCharsOnCurrentLine = (fgetc(inputFile) - OFFSET);
+		numCharsOnCurrentLine = fgetc(inputFile)-2; //Need to subtract 2 to account for the newline characters?
 
 		do {
 			//Read file here
@@ -315,9 +317,9 @@ int uudecode(const char *InputFilename)
 				//fputc('\n', outputFile);
 				//Next character should be a newline, then the first character in a line--the # of characters in that line
 				
-				numCharsInDocument -= numCharsRead;
-				numCharsRead = fgetc(inputFile);  //Setting it to 0 anyways, so just trash the '\n' character here
-				numCharsOnCurrentLine = (fgetc(inputFile)) - OFFSET;
+				//numCharsInDocument -= numCharsRead;
+				//numCharsRead = fgetc(inputFile);  //Setting it to 0 anyways, so just trash the '\n' character here
+				numCharsOnCurrentLine = (fgetc(inputFile)) - 2;
 				numCharsRead = 0;
 
 
@@ -343,7 +345,7 @@ int uudecode(const char *InputFilename)
 			}
 
 			
-		} while (numCharsOnCurrentLine != '@');
+		} while (numCharsOnCurrentLine+2 != '`');
 
 		//Write last line(s)
 		//Close file streams
