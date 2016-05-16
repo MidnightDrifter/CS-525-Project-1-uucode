@@ -85,9 +85,9 @@ void encode(char a, char b, char c)
 }
 
 
-void decode(char a, char b, char c, char d, FILE * file)
+void decode(unsigned char a, unsigned char b, unsigned char c, unsigned char d, FILE * file, int numCharsToInsert)
 {
-	char t1, t2, t3, tA, tB, tC, tD;
+	unsigned char t1, t2, t3, tA, tB, tC, tD;
 
 	tA = a - 32;
 	tB = b - 32;
@@ -100,7 +100,7 @@ void decode(char a, char b, char c, char d, FILE * file)
 	t3 &= 0;
 	t1 = tA;
 	t1 <<= 2;  //Shift left 2, guaranteed to 0 out last 2 digits
-	char temp = tB;
+	unsigned char temp = tB;
 	temp &= ~(3 << 6);
 	temp >>= 4;  //If encoded properly, chars a-d should all have 2 leading 0's, so you're sure to 0 out the 1st 6 bits.  0 them out manually to be sure
 	t1 |= temp;
@@ -123,6 +123,7 @@ void decode(char a, char b, char c, char d, FILE * file)
 	//t1 += 32;
 	//t2 += 32;
 	//t3 += 32;
+/*
 	if (t1 != '\0')
 	{
 		putc(t1, file);
@@ -135,7 +136,20 @@ void decode(char a, char b, char c, char d, FILE * file)
 	{
 		putc(t3, file);
 	}
+	*/
 
+	putc(t1, file);
+
+
+	if (numCharsToInsert > 1)
+	{
+		putc(t2, file);
+	}
+
+	if (numCharsToInsert > 2)
+	{
+		putc(t3, file);
+	}
 }
 
 
@@ -265,6 +279,7 @@ int uudecode(const char *InputFilename)
 	FILE * inputFile = fopen(InputFilename, "r");
 	int numCharsOutputted = 0;
 	int numCharsOnCurrentLine = 60;
+	
 	//int numCharsInDocument = 0;
 	//int trash;
 	//bool isLastLine = false;
@@ -305,7 +320,8 @@ int uudecode(const char *InputFilename)
 		FILE * outputFile = fopen(outputFilename, "wb");  //Double check this--wb for write binary or just w?
 
 		//char buffer[SIZE_OF_WRITE_OUT_BUFFER] = { '0', '0', '0', '0' };
-		char * buffer = new char[4];
+		//unsigned char * buffer = new unsigned char[4];
+		 char * buffer = new  char[4];
 		fgetc(inputFile);  //get rid of newline char
 		//numCharsOnCurrentLine = (fgetc(inputFile) - OFFSET);
 		numCharsOnCurrentLine = fgetc(inputFile)-32; //Need to subtract 2 to account for the newline characters?
@@ -342,7 +358,7 @@ int uudecode(const char *InputFilename)
 				*/
 
 				fread(buffer, CHAR_SIZE, 4, inputFile);
-				decode((*buffer), (*(buffer + sizeof(char))), (*(buffer + sizeof(char) * 2)), (*(buffer + sizeof(char) * 3)), outputFile);
+				decode((*buffer), (*(buffer + sizeof( char))), (*(buffer + sizeof(char) * 2)), (*(buffer + sizeof( char) * 3)), outputFile, (numCharsOnCurrentLine - numCharsOutputted));
 				numCharsOutputted += 3;  
 
 			}

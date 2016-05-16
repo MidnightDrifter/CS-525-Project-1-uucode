@@ -49,11 +49,12 @@ void encode(char a, char b, char c);
 
 /**
 \brief  Decode characters in groups of 4 and push them to the specified output file
-\param chars a, b, c, d   The input characters to decode via the uudecode algorithm
+\param unsigned chars a, b, c, d   The input characters to decode via the uudecode algorithm
 \param FILE * file    The file stream pointer to output the decoded characters to
+\param int numCharsToInsert  The number of characters to insert into the file--prevents extra NULL chars at the end
 \return  N/A
 */
-void decode(char a, char b, char c, char d, FILE * file);
+void decode(unsigned char a, unsigned char b, unsigned char c, unsigned char d, FILE * file, int numCharsToInsert);
 
 
 
